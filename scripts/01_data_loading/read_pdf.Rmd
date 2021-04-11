@@ -1,0 +1,158 @@
+---
+title: "cargando los datos"
+author: "EP"
+date: "4/11/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r message=FALSE, warning=FALSE}
+# library(rJava)
+# library(tabulizer)
+# library(tidyverse)
+# library(lubridate)
+```
+
+
+
+```{r}
+# # PDF Scrape Tables
+# castellon_res<- extract_tables(
+#     file   = "../../raw_data/resultados_completos_master_invierno_2021.pdf", 
+#     method = "decide", 
+#     output = "data.frame")
+
+```
+
+
+
+
+```{r}
+# PDF Scrape Tables
+# castellon_res<- extract_tables(
+#     file   = "../../raw_data/resultados_completos_master_invierno_2021.pdf", 
+#     method = "decide", 
+#     output = "matrix")
+
+```
+
+## 400 Libre masculino
+
+###  +90
+
+```{r}
+castellon_res %>% pluck(1) %>% as_tibble()
+
+cuatrocientos_libre <- tibble(nombre = "DOMINGUEZ FERNÁNDEZ, Juan Franc",
+                              año = 27,
+                              club = "C.N. Master Madrid",
+                              tiempo = "11:12,13",
+                              genero = "M",
+                              points = 330)
+                              
+
+```
+
+###  +80
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(2) %>% as_tibble() %>% filter(V1=="1.")
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V3,
+              club = temp_dat$V4,
+              tiempo = temp_dat$V7,
+              genero = "M",
+              points = temp_dat$V8)
+
+
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+```
+
+### + 75-65
+
+
+```{r}
+
+len <- nrow(castellon_res %>% pluck(3) %>% as_tibble() )/3
+
+temp_dat<- castellon_res %>% pluck(3) %>% as_tibble() %>% filter(V1 %in% paste0(seq(1, len , 1), ".") )
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V4,
+              club = temp_dat$V5,
+              tiempo = temp_dat$V8,
+              genero = "M",
+              points = temp_dat$V9)
+
+
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+```
+
+
+## 400 Libre femenino
+### 75
+
+
+
+```{r}
+
+castellon_res %>% pluck(4) %>% as_tibble()
+
+temp <- tibble(nombre = c( "TOMASENA ALZURI, Mª Rosario" , "DIEZ RUIZ, Concepcion" , "LOPEZ DE LA CRUZ, Mercedes" ),
+               año = c(46, 47, 52),
+               club = c("Kairoscore" , "C.N. Master Madrid" , "C.N. Monteverde"),
+               tiempo = c("9:44.77", "10:25.44", "12:44.94"),
+               genero = "F",
+               points = c(250, 175,61))
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+## 400 L 35-45
+
+
+```{r}
+
+
+temp <- tibble(nombre = "MORENO VIDAL, Victor Manuel",
+                              año = 72,
+                              club = "Aquatic Horta Nord",
+                              tiempo = "4:36.12",
+                              genero = "M",
+                              points = 682)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+
+
+```{r}
+len <- nrow(castellon_res %>% pluck(50) %>% as_tibble() )
+
+temp_dat<- castellon_res %>% pluck(50) %>% as_tibble() %>% filter(V1 %in% paste0(seq(1, len , 1), ".") )
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V6,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "M",
+              points = temp_dat$V13)
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+
+
