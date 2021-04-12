@@ -13,10 +13,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r message=FALSE, warning=FALSE}
-# library(rJava)
-# library(tabulizer)
-# library(tidyverse)
-# library(lubridate)
+library(rJava)
+library(tabulizer)
+library(tidyverse)
+library(lubridate)
 ```
 
 
@@ -34,10 +34,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
-# PDF Scrape Tables
+### PDF Scrape Tables
+
 # castellon_res<- extract_tables(
-#     file   = "../../raw_data/resultados_completos_master_invierno_2021.pdf", 
-#     method = "decide", 
+#     file   = "../../raw_data/resultados_completos_master_invierno_2021.pdf",
+#     method = "decide",
 #     output = "matrix")
 
 ```
@@ -119,7 +120,214 @@ temp <- tibble(nombre = c( "TOMASENA ALZURI, Mª Rosario" , "DIEZ RUIZ, Concepci
 cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
 
 ```
-## 400 L 35-45
+
+
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(17) %>% as_tibble()
+
+temp_dat <- temp_dat[c(seq(1,31,3)) ,]
+
+temp_dat[1,2] <- "GONZALEZ PEREZ, Domingo"
+temp_dat[1,3] <- "61"
+temp_dat[2,2] <- "MENENDEZ CUELLAR, Manuel"
+temp_dat[2,3] <- "58"
+temp_dat[3,2] <- "QUIROS GIL, Ricardo"
+temp_dat[3,3] <- "60"
+temp_dat[4,2] <- "HEMPEL, Wilhelm"
+temp_dat[4,3] <- "57"
+temp_dat[5,2] <- "ETXEBESTE OTEGI, Javier"
+temp_dat[5,3] <- "61"
+temp_dat[6,2] <- "MARCO GARRIDO, Andrés José"
+temp_dat[6,3] <- "60"
+temp_dat[7,2] <- "ARIAS TOBALINA, Federico"
+temp_dat[7,3] <- "57"
+temp_dat[8,2] <- "JUNQUERA YEBES, Miguel Angel"
+temp_dat[8,3] <- "57"
+temp_dat[9,2] <- "MARTINEZ IBAÑEZ, Roque Pascual"
+temp_dat[9,3] <- "58"
+temp_dat[10,2] <- "MARTIN- DELGADO GOMEZ, Pedro"
+temp_dat[10,3] <- "58"
+temp_dat[11,2] <- "GÓMEZ AREVALO, Daniel"
+temp_dat[11,3] <- "61"
+
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V3,
+              club = temp_dat$V4,
+              tiempo = temp_dat$V7,
+              genero = "M",
+              points = temp_dat$V8)
+
+
+
+
+
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+
+```
+
+```{r}
+temp_dat<- castellon_res %>% pluck(18) %>% as_tibble()
+
+temp_dat <- temp_dat[c(seq(1,31,3),35,38) ,] %>% 
+    mutate(V4 = readr::parse_number(as.character(V2)),
+           V2 = gsub("[0-9]", "", V2))
+temp_dat$V4 <- as.character(temp_dat$V4)
+
+
+temp_dat[6,2] <- "MELCHOR MARTIN DE LA SIERRA, Jose Luis"
+temp_dat[6,3] <- "C.N. Leganes"
+temp_dat[6,4] <- "65"
+
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V4,
+              club = temp_dat$V3,
+              tiempo = temp_dat$V7,
+              genero = "M",
+              points = temp_dat$V8)
+
+
+
+
+
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+
+```{r}
+
+
+temp <- tibble(nombre = "ESPINA VELAZ, Fernando",
+                              año = 71,
+                              club = "C.N. Aquamasters",
+                              tiempo = "4:41.78",
+                              genero = "M",
+                              points = 653)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(19) %>% as_tibble()
+
+temp_dat <- temp_dat[c(seq(3,39,3)) ,] 
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V5,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "M",
+              points = temp_dat$V13)
+
+
+
+
+
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+```{r}
+
+
+temp <- tibble(nombre = "PLAZA VALDES, Eduardo",
+                              año = 67,
+                              club = "C.N. Monteverde",
+                              tiempo = "6:02.51",
+                              genero = "M",
+                              points = 306)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(20) %>% as_tibble()
+
+temp_dat <- temp_dat[c(3) ,] 
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V6,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "M",
+              points = temp_dat$V13)
+
+
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(21) %>% as_tibble()
+
+temp_dat <- temp_dat[c(seq(4,16,3), 20, 23, 26) ,] %>% 
+    mutate(V1 = gsub("^.{0,3}", "", V1) ,
+           V2 = readr::parse_number(as.character(V1)),
+           V1 = gsub("[0-9.]", "", V1))
+
+temp = tibble(nombre = temp_dat$V1,
+              año = temp_dat$V2,
+              club = temp_dat$V3,
+              tiempo = temp_dat$V6,
+              genero = "F",
+              points = temp_dat$V7)
+
+
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(22) %>% as_tibble()
+temp_dat <- temp_dat[c(seq(3,15,3), seq(19,37,3)) ,] %>% 
+    mutate(V1 = gsub("^.{0,3}", "", V1) ,
+           V2 = readr::parse_number(as.character(V1)),
+           V1 = gsub("[0-9.]", "", V1))
+
+temp = tibble(nombre = temp_dat$V1,
+              año = temp_dat$V2,
+              club = temp_dat$V3,
+              tiempo = temp_dat$V7,
+              genero = "F",
+              points = temp_dat$V8)
+
+
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+
+
+
+## 400 L +45
 
 
 ```{r}
@@ -154,5 +362,496 @@ cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
 
 ```
 
+
+```{r}
+
+
+temp <- tibble(nombre = "GUISASOLA FERNANDEZ, Iñigo",
+                              año = 75,
+                              club = "C.N. Santurtzi",
+                              tiempo = "5:45.46",
+                              genero = "M",
+                              points = 348)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+
+
+```{r}
+
+len <- nrow(castellon_res %>% pluck(51) %>% as_tibble() )
+
+temp_dat<- castellon_res %>% pluck(51) %>% as_tibble()
+
+temp_dat <- temp_dat[c(3,6,9,12,15,18,23,26,29,32,35,38 ),]
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V5,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "M",
+              points = temp_dat$V13) %>% 
+    mutate(nombre = ifelse(nombre == temp_dat[[5,2]], "GOMEZ DE LA FUENTE, Pedro Miguel",nombre ),
+           año    = ifelse(nombre == "GOMEZ DE LA FUENTE, Pedro Miguel", "74", año ))
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+### +40
+
+
+
+```{r}
+
+
+temp <- tibble(nombre = "GUISASOLA FERNANDEZ, Iñigo",
+                              año = 75,
+                              club = "C.N. Santurtzi",
+                              tiempo = "5:45.46",
+                              genero = "M",
+                              points = 348)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+
+```{r}
+
+
+temp <- tibble(nombre = "DE LA VIESCA SANTAFE, Carlos",
+                              año = 78,
+                              club = "Real Canoe N.C.",
+                              tiempo = "4:55.88",
+                              genero = "M",
+                              points = 538)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+
+```
+
+
+
+```{r}
+len <- nrow(castellon_res %>% pluck(52) %>% as_tibble() )
+
+temp_dat<- castellon_res %>% pluck(52) %>% as_tibble()
+
+temp_dat <- temp_dat[seq(3,39,3),]
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V5,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "M",
+              points = temp_dat$V13) 
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+### +35
+
+
+```{r}
+
+
+temp <- tibble(nombre = "ARROYO FERNANDEZ, Alvaro",
+                              año = 85,
+                              club = "E.Ciudad de Talavera Aqüis",
+                              tiempo = "4:27.97",
+                              genero = "M",
+                              points = 698)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+
+```
+
+
+```{r}
+
+len <- nrow(castellon_res %>% pluck(53) %>% as_tibble() )
+
+temp_dat<- castellon_res %>% pluck(53) %>% as_tibble()
+
+
+temp_dat <- temp_dat[seq(3,39,3),]
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V5,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "M",
+              points = temp_dat$V13)  %>% 
+    mutate(nombre = ifelse(nombre == temp_dat[[11,2]], "BILDOSOLA AGIRREGOMEZKORTA, Mikel",nombre ),
+           año    = ifelse(nombre == "BILDOSOLA AGIRREGOMEZKORTA, Mikel", "83", año ))
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+
+```
+
+
+```{r}
+
+
+temp <- tibble(nombre = "GARGALLO BADENAS, Javier",
+                              año = 82,
+                              club = "C.N. Fanatic Swim Castellon",
+                              tiempo = "5:54.82",
+                              genero = "M",
+                              points = 300)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+
+
+### +45 F
+
+```{r}
+
+
+len <- nrow(castellon_res %>% pluck(55) %>% as_tibble() )
+
+temp_dat<- castellon_res %>% pluck(55) %>% as_tibble() 
+temp_dat <- temp_dat[seq(1,28,3),]
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V4,
+              club = temp_dat$V5,
+              tiempo = temp_dat$V8,
+              genero = "F",
+              points = temp_dat$V9) 
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+
+```{r}
+
+len <- nrow(castellon_res %>% pluck(56) %>% as_tibble() )
+
+temp_dat<- castellon_res %>% pluck(56) %>% as_tibble() 
+temp_dat <- temp_dat[c(seq(3,12,3),seq(16,37,3)),]
+temp_dat[1,1] <- "GARCÍA ALFARO, Maria José"
+temp_dat[1,2] <- "72"
+temp_dat[2,1] <- "GARCIA FAS, Ana Isabel"
+temp_dat[2,2] <- "73"
+temp_dat[3,1] <- "SANCHEZ LOPEZ, Maria Jose"
+temp_dat[3,2] <- "73"
+temp_dat[4,1] <- "MORA, TOMÁS, Paloma"
+temp_dat[4,2] <- "72"
+temp_dat[5,1] <- "ZAPATER RODRIGUEZ, Gemma"
+temp_dat[5,2] <- "81"
+temp_dat[6,1] <- "PUCHE RIBERA, Esther"
+temp_dat[6,2] <- "79"
+temp_dat[7,1] <- "PRIOR PALACIN, Almudena"
+temp_dat[7,2] <- "81"
+temp_dat[8,1] <- "QUINTANILLA GARCÍA, Ana Isabel"
+temp_dat[8,2] <- "79"
+temp_dat[9,1] <- "BRETÓ PRATS, Paula"
+temp_dat[9,2] <- "79"
+temp_dat[10,1] <- "PARREÑO CAPARRÓS, Elena"
+temp_dat[10,2] <- "78"
+temp_dat[11,1] <- "GONZALEZ TORRES, Monica"
+temp_dat[11,2] <- "81"
+temp_dat[12,1] <- "MOSCARDO FERRANDO, Virginia"
+temp_dat[12,2] <- "77"
+
+
+temp = tibble(nombre = temp_dat$V1,
+              año = temp_dat$V2,
+              club = temp_dat$V3,
+              tiempo = temp_dat$V6,
+              genero = "F",
+              points = temp_dat$V7) 
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+
+```
+
+
+```{r}
+
+temp <- tibble(nombre = "DE MIGUEL GONZALEZ, Carolina",
+                              año = 83,
+                              club = "Vila-Swim Fondistas C.N.",
+                              tiempo = "4:52.66",
+                              genero = "F",
+                              points = 722)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+
+```{r}
+
+len <- nrow(castellon_res %>% pluck(57) %>% as_tibble() )
+
+temp_dat<- castellon_res %>% pluck(57) %>% as_tibble() 
+temp_dat <- temp_dat[seq(3,21,3),]
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V5,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "F",
+              points = temp_dat$V13)  %>% 
+    mutate(nombre = ifelse(nombre == temp_dat[[5,2]], "MARTINEZ ACACIO MONEDERO, Marieta",nombre ),
+           año    = ifelse(nombre == "MARTINEZ ACACIO MONEDERO, Marieta", "86", año ))
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+```
+
+
+```{r}
+
+temp <- tibble(nombre = "MARQUES VELASCO, Jaime",
+                              año = 87,
+                              club = "C.N. Monteverde",
+                              tiempo = "4:03.24",
+                              genero = "M",
+                              points = 867)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(93) %>% as_tibble() 
+temp_dat <- temp_dat[seq(3,30,3),]
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V6,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "M",
+              points = temp_dat$V13) 
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+```{r}
+
+temp <- tibble(nombre = "FERRER ESTELLER, Fernando",
+                              año = 94,
+                              club = "Cst-Cst Costa Azahar",
+                              tiempo = "4:05.06",
+                              genero = "M",
+                              points = 857)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+
+```{r}
+
+page_66 <- extract_tables(
+    file   = "../../raw_data/resultados_completos_master_invierno_2021.pdf",
+    method = "stream",
+    pages = 66,
+    output = "matrix")
+
+ temp_dat <- as_tibble(page_66[[1]][seq(3,36,3),])
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V6,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "M",
+              points = temp_dat$V13) 
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+```
+
+
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(95) %>% as_tibble()
+
+temp_dat <- temp_dat[seq(1,19,3),]
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V4,
+              club = temp_dat$V5,
+              tiempo = temp_dat$V8,
+              genero = "M",
+              points = NA) 
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+
+```
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(96) %>% as_tibble()
+temp_dat <- temp_dat[seq(1,10,3),]
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V3,
+              club = temp_dat$V5,
+              tiempo = temp_dat$V8,
+              genero = "F",
+              points = temp_dat$V9) 
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+```{r}
+
+
+temp <- tibble(nombre = "BERRUETE CIAURRIZ, Itziar",
+                              año = 91,
+                              club = "C.D. Amaya",
+                              tiempo = "5:17.95",
+                              genero = "F",
+                              points = 513)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+
+
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(97) %>% as_tibble()
+
+temp_dat <- temp_dat[c(seq(3,30,3),34,37) ,]
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V5,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "F",
+              points = temp_dat$V13) 
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+
+```
+
+
+
+```{r}
+
+temp <- tibble(nombre = "SANCHEZ CASTILLO, Sheila",
+                              año = 95,
+                              club = "Club Natacion Thiar Horadada",
+                              tiempo = "4:54.46",
+                              genero = "F",
+                              points = 655)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+
+
+```
+
+
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(98) %>% as_tibble()
+temp_dat <- temp_dat[c(seq(3,33,3)) ,]
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V5,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "F",
+              points = temp_dat$V13)  %>% 
+    mutate(nombre = ifelse(nombre == temp_dat[[1,2]], "MAYERO MARISCAL DE GANTE, Paula",nombre ),
+           año    = ifelse(nombre == "MAYERO MARISCAL DE GANTE, Paula", "95", año ))
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+
+```{r}
+
+
+temp <- tibble(nombre = "SANCHEZ-ROJO HUERTAS, Belen",
+                              año = 97,
+                              club = "C.N. Albacete",
+                              tiempo = "4:45.47",
+                              genero = "F",
+                              points = NA)
+                              
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+
+```{r}
+
+temp_dat<- castellon_res %>% pluck(99) %>% as_tibble()
+temp_dat <- temp_dat[c(seq(3,18,3)) ,]
+
+temp = tibble(nombre = temp_dat$V2,
+              año = temp_dat$V6,
+              club = temp_dat$V7,
+              tiempo = temp_dat$V12,
+              genero = "F",
+              points = temp_dat$V13)  
+
+cuatrocientos_libre <- cuatrocientos_libre %>% rbind(temp)
+
+
+```
+
+
+
+```{r}
+write_rds(cuatrocientos_libre, "../../clean_data/cuatrocientos.rds")
+
+```
 
 
